@@ -2,29 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mirror : MonoBehaviour
+public class StartingMirror : MonoBehaviour
 {
     public float speed = 200;
     private bool scroll = false;
     private Vector3 mOffset;
     private float mZcoord;
-    private bool initialized =  true;
+    
     // Start is called before the first frame update
     void Start()
     {
-        mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
-        mOffset = gameObject.transform.position - GetMouseWorldPos();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (initialized)
-        {
-            Debug.Log("bruh");
-            
-            transform.position = GetMouseWorldPos() + mOffset;
-        }
+
         if (scroll)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -49,11 +43,6 @@ public class Mirror : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (initialized)
-        {
-            Debug.Log("burh");
-            initialized = false;
-        }
         mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseWorldPos();
     }
@@ -71,7 +60,7 @@ public class Mirror : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Trash")
+        if (collision.gameObject.tag == "Trash")
         {
             Destroy(gameObject);
         }

@@ -9,6 +9,10 @@ public class LaserBeam : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
     private bool laserOn = false;
+    private Vector3 mOffset;
+    private float mZcoord;
+    private bool scroll;
+    public float speed = 200;
     void Start()
     {
 
@@ -36,14 +40,27 @@ public class LaserBeam : MonoBehaviour
                     linerenderer.positionCount += 1;
                     linerenderer.SetPosition(linerenderer.positionCount - 1, ray.origin + ray.direction * 200);
                     break;
-                    Debug.Log("no more collisions");
                 }
             }
         }
-        
+        if (scroll)
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+
+                transform.Rotate(Vector3.right * speed * Time.deltaTime);
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                Debug.Log("bruh");
+                transform.Rotate(Vector3.left * speed * Time.deltaTime);
+            }
+        }
+
     }
     private void OnMouseOver()
     {
+        scroll = true;
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("click");
@@ -57,6 +74,27 @@ public class LaserBeam : MonoBehaviour
                 laserOn = false;
             }
         }
+    }
+    private void OnMouseExit()
+    {
+        scroll = false;
+    }
+    private void OnMouseDown()
+    {
+        mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
+        mOffset = gameObject.transform.position - GetMouseWorldPos();
+    }
+    private void OnMouseDrag()
+    {
+        transform.position = GetMouseWorldPos() + mOffset;
+    }
+    private Vector3 GetMouseWorldPos()
+    {
+        Vector3 mousePoint = Input.mousePosition;
+
+        mousePoint.z = mZcoord;
+
+        return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 
 }
