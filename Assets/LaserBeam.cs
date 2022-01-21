@@ -13,6 +13,7 @@ public class LaserBeam : MonoBehaviour
     private float mZcoord;
     private bool scroll;
     public float speed = 200;
+    private bool insideGlass = false;
     void Start()
     {
 
@@ -26,14 +27,47 @@ public class LaserBeam : MonoBehaviour
             ray = new Ray(transform.position, transform.forward);
             linerenderer.positionCount = 1;
             linerenderer.SetPosition(0, transform.position);
-
+            int count = 0;
             while (true)
             {
                 if (Physics.Raycast(ray.origin, ray.direction, out hit))
                 {
+                    
                     linerenderer.positionCount += 1;
                     linerenderer.SetPosition(linerenderer.positionCount - 1, hit.point);
-                    ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
+                    if (hit.collider.tag == "Mirror")
+                    {
+                        Debug.Log("we hit mirror");
+                        ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
+
+                    }
+                    else if(hit.collider.tag == "Glass") {
+                        if (insideGlass == false)
+                        {
+                            float refractiveRatio = 1.0f / 1.5f;
+                            Vector3 newRayPos = hit.point + ray.direction * 0.001f;
+                            Vector3 norm = hit.normal;
+                            Vector3 incident = ray.direction;
+                            Vector3 refractedVector = (refractiveRatio * Vector3.Cross(norm, Vector3.Cross(-norm, incident)) - norm * Mathf.Sqrt(1 - Vector3.Dot(Vector3.Cross(norm, incident) * (refractiveRatio * refractiveRatio), Vector3.Cross(norm, incident)))).normalized;
+                            ray = new Ray(newRayPos, refractedVector);
+                            insideGlass = true;
+                        }
+                        else
+                        {
+                            float refractiveRatio = 1.5f / 1.0f;
+                            Vector3 newRayPos = hit.point + ray.direction * 0.001f;
+                            Vector3 norm = -hit.normal;
+                            Vector3 incident = ray.direction;
+                            Vector3 refractedVector = (refractiveRatio * Vector3.Cross(norm, Vector3.Cross(-norm, incident)) - norm * Mathf.Sqrt(1 - Vector3.Dot(Vector3.Cross(norm, incident) * (refractiveRatio * refractiveRatio), Vector3.Cross(norm, incident)))).normalized;
+                            ray = new Ray(newRayPos, refractedVector);
+                            insideGlass = false;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    
                 }
                 else
                 {
@@ -52,7 +86,6 @@ public class LaserBeam : MonoBehaviour
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                Debug.Log("bruh");
                 transform.Rotate(Vector3.left * speed * Time.deltaTime);
             }
         }

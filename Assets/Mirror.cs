@@ -8,12 +8,15 @@ public class Mirror : MonoBehaviour
     private bool scroll = false;
     private Vector3 mOffset;
     private float mZcoord;
-    private bool initialized =  true;
+    public bool initialized =  true;
+    //public bool isStartingObject = false;
     // Start is called before the first frame update
     void Start()
     {
-        mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
-        mOffset = gameObject.transform.position - GetMouseWorldPos();
+       
+            mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
+            mOffset = gameObject.transform.position - GetMouseWorldPos();
+        
     }
 
     // Update is called once per frame
@@ -51,7 +54,7 @@ public class Mirror : MonoBehaviour
     {
         if (initialized)
         {
-            Debug.Log("burh");
+            
             initialized = false;
         }
         mZcoord = Camera.main.WorldToScreenPoint(gameObject.transform.transform.position).z;
