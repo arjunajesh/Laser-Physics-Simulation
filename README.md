@@ -4,6 +4,8 @@ https://arjunajesh.github.io/Laser-Simulation-Game/Builds/index.html
 
 This project is intended to be an interactive simulation of how a beam of light would interact through a system of mirrors and blocks.
 
+You can look at the code by navigating to Assets >> Scripts
+
 ### Instructions
 Turn on the Laser by clicking on the laser pointer (black rectangle). 
 You can move any of the objects in the scene by dragging and dropping.
