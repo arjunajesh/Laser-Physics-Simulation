@@ -1,4 +1,4 @@
-# Laser Simulation Game
+# Laser Physics Simulation
 ### Link to Simulation on Github Pages:
 https://arjunajesh.github.io/Laser-Simulation-Game/Builds/index.html
 
