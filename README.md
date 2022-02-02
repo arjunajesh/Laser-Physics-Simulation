@@ -1,6 +1,6 @@
 # Laser Physics Simulation
 ### Link to Simulation on Github Pages:
-https://arjunajesh.github.io/Laser-Simulation-Game/Builds/index.html
+https://arjunajesh.github.io/Laser-Physics-Simulation/Builds/index.html
 
 This project is intended to be an interactive simulation of how a beam of light would interact through a system of mirrors and blocks.
 
